@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Embedeon</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0f12;
+      --surface: #13161b;
+      --border: #1e2229;
+      --text: #e2e4e9;
+      --muted: #6b7280;
+      --accent: #3b82f6;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+      font-size: 15px;
+      line-height: 1.7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 2.5rem 3rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+    }
+
+    .logo {
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--text);
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .tagline {
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    main {
+      flex: 1;
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 5rem 3rem;
+      width: 100%;
+    }
+
+    .prompt {
+      color: var(--accent);
+      user-select: none;
+    }
+
+    h1 {
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--muted);
+      margin-bottom: 3rem;
+    }
+
+    h1 em {
+      color: var(--text);
+      font-style: normal;
+    }
+
+    .block {
+      margin-bottom: 3rem;
+    }
+
+    .block-label {
+      color: var(--accent);
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .block-label::before { content: '// '; color: var(--muted); }
+
+    .services {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem 2rem;
+    }
+
+    .services li::before {
+      content: '— ';
+      color: var(--muted);
+    }
+
+    .contact a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .contact a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      padding: 1.5rem 3rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    @media (max-width: 600px) {
+      header, main, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .services { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">Embed<span>eon</span></div>
+    <div class="tagline">embedded software &amp; electronics engineering</div>
+  </header>
+
+  <main>
+    <h1><span class="prompt">$ </span>We build things that run close to the metal. <em>R&amp;D for embedded systems.</em></h1>
+
+    <div class="block">
+      <div class="block-label">What we do</div>
+      <ul class="services">
+        <li>Embedded firmware</li>
+        <li>RTOS &amp; bare-metal</li>
+        <li>Hardware bring-up</li>
+        <li>PCB design &amp; layout</li>
+        <li>Prototyping</li>
+        <li>System architecture</li>
+        <li>BSP development</li>
+        <li>Low-power design</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <div class="block-label">Stack</div>
+      C · C++ · Python · ARM · RISC-V · FreeRTOS · Zephyr · KiCad · Altium
+    </div>
+
+    <div class="block contact">
+      <div class="block-label">Contact</div>
+      <a href="mailto:hello@embedeon.com">hello@embedeon.com</a>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2026 Embedeon &mdash; R&amp;D in embedded software &amp; electronics engineering
+  </footer>
+
+</body>
+</html>
