@@ -119,6 +119,49 @@
       font-size: 0.78rem;
     }
 
+    .scope-wrap {
+      position: relative;
+      margin-bottom: 3rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      background: #0a0c0f;
+    }
+
+    .scope-wrap canvas {
+      display: block;
+      width: 100%;
+      height: 180px;
+    }
+
+    /* CRT scanline overlay */
+    .scope-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 3px,
+        rgba(0,0,0,0.18) 3px,
+        rgba(0,0,0,0.18) 4px
+      );
+      pointer-events: none;
+    }
+
+    .scope-labels {
+      position: absolute;
+      top: 6px;
+      left: 10px;
+      right: 10px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.65rem;
+      color: rgba(0,255,136,0.5);
+      pointer-events: none;
+      letter-spacing: 0.06em;
+    }
+
     @media (max-width: 600px) {
       header, main, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
       .services { grid-template-columns: 1fr; }
@@ -134,6 +177,15 @@
 
   <main>
     <h1><span class="prompt">$ </span>We build things that run close to the metal. <em>R&amp;D for embedded systems.</em></h1>
+
+    <div class="scope-wrap">
+      <canvas id="scope"></canvas>
+      <div class="scope-labels">
+        <span>CH1</span>
+        <span id="scope-freq">0.5 Hz</span>
+        <span id="scope-amp">0.00 V</span>
+      </div>
+    </div>
 
     <div class="block">
       <div class="block-label">What we do</div>
@@ -164,5 +216,122 @@
     &copy; 2026 Embedeon &mdash; R&amp;D in embedded software &amp; electronics engineering
   </footer>
 
+<script>
+  const canvas = document.getElementById('scope');
+  const ctx = canvas.getContext('2d');
+
+  // Mouse tracking
+  let mouseX = 0, mouseY = 0, prevMouseX = 0, prevMouseY = 0;
+  let hasMouseMoved = false;
+  window.addEventListener('mousemove', e => {
+    prevMouseX = mouseX; prevMouseY = mouseY;
+    mouseX = e.clientX; mouseY = e.clientY;
+    hasMouseMoved = true;
+  });
+
+  // Signal state
+  let targetAmp = 0, targetFreq = 0.5;
+  let amp = 0, freq = 0.5;
+  let phase = 0;
+  const BUFFER = 400;
+  const samples = new Float32Array(BUFFER);
+  let demoPhase = 0;
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width = rect.width * devicePixelRatio;
+    canvas.height = 180 * devicePixelRatio;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function drawGrid(w, h) {
+    ctx.strokeStyle = 'rgba(0,255,136,0.08)';
+    ctx.lineWidth = 1;
+    const cols = 10, rows = 8;
+    for (let i = 0; i <= cols; i++) {
+      ctx.beginPath();
+      ctx.moveTo(i * w / cols, 0);
+      ctx.lineTo(i * w / cols, h);
+      ctx.stroke();
+    }
+    for (let i = 0; i <= rows; i++) {
+      ctx.beginPath();
+      ctx.moveTo(0, i * h / rows);
+      ctx.lineTo(w, i * h / rows);
+      ctx.stroke();
+    }
+    // Center lines slightly brighter
+    ctx.strokeStyle = 'rgba(0,255,136,0.15)';
+    ctx.beginPath(); ctx.moveTo(0, h / 2); ctx.lineTo(w, h / 2); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(w / 2, 0); ctx.lineTo(w / 2, h); ctx.stroke();
+  }
+
+  function frame() {
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    // Background
+    ctx.fillStyle = '#0a0c0f';
+    ctx.fillRect(0, 0, w, h);
+
+    drawGrid(w, h);
+
+    if (hasMouseMoved) {
+      const dx = mouseX - prevMouseX;
+      const dy = mouseY - prevMouseY;
+      const speed = Math.min(Math.sqrt(dx * dx + dy * dy), 40) / 40;
+      const absDx = Math.abs(dx), absDy = Math.abs(dy);
+      const verticality = absDy / (absDx + absDy + 0.001);
+
+      targetAmp = speed;
+      targetFreq = lerp(0.5, 10, verticality);
+    } else {
+      // Demo: gentle sine when no mouse
+      targetAmp = 0.18;
+      targetFreq = 0.8;
+    }
+
+    // Smooth toward targets
+    amp = lerp(amp, targetAmp, 0.08);
+    freq = lerp(freq, targetFreq, 0.06);
+
+    // Advance phase and push new sample
+    phase += (freq / 60) * Math.PI * 2;
+    const newSample = amp * Math.sin(phase);
+
+    // Shift buffer left, add new sample
+    samples.copyWithin(0, 1);
+    samples[BUFFER - 1] = newSample;
+
+    // Draw waveform
+    ctx.beginPath();
+    ctx.strokeStyle = '#00ff88';
+    ctx.lineWidth = 1.5 * devicePixelRatio;
+    ctx.shadowBlur = 10 * devicePixelRatio;
+    ctx.shadowColor = '#00ff88';
+
+    const cy = h / 2;
+    const yscale = (h / 2) * 0.85;
+
+    for (let i = 0; i < BUFFER; i++) {
+      const x = (i / (BUFFER - 1)) * w;
+      const y = cy - samples[i] * yscale;
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // Update labels
+    document.getElementById('scope-freq').textContent = freq.toFixed(1) + ' Hz';
+    document.getElementById('scope-amp').textContent = (amp * 3.3).toFixed(2) + ' V';
+
+    requestAnimationFrame(frame);
+  }
+
+  frame();
+</script>
 </body>
 </html>
