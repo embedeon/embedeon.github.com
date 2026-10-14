@@ -1,6 +1,6 @@
 /* Embedeon components, direction "Valo". Needs tokens.css first. Plain CSS, no build step.
    Breakpoints: 720 px (page margin grows, tokens.css), 900 px (two-column layouts). Everything is one column below 900 px.
-   Contents: base · header · footer · buttons and links · labels, dots, status · stage · key figures · sections and splits ·
+   Contents: base · header · language switch · footer · buttons and links · labels, dots, status · stage · key figures · sections and splits ·
    product list (catalog cards) · fact row · steps · features · spec list · contact block · guide page. */
 
 /* ---------- base ---------- */
@@ -32,10 +32,10 @@ a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 4px; 
 .site-header-in { display: flex; align-items: center; justify-content: space-between; gap: var(--s4); min-height: var(--header-h); }
 .wm { height: 14px; width: auto; color: var(--text); }
 .wm path { fill: currentColor; }
-.brand { display: inline-flex; padding-block: var(--s2); text-decoration: none; }
+.brand { display: inline-flex; flex: none; padding-block: var(--s2); text-decoration: none; }
 .crumb { display: flex; align-items: center; gap: var(--s3); min-width: 0; }
 .crumb-sep { width: 1px; height: 16px; background: var(--line); flex: none; }
-.crumb-page { font-weight: var(--w-medium); font-size: var(--fs-small); text-decoration: none; white-space: nowrap; }
+.crumb-page { min-width: 0; overflow: hidden; text-overflow: ellipsis; font-weight: var(--w-medium); font-size: var(--fs-small); text-decoration: none; white-space: nowrap; }
 .site-nav { display: flex; align-items: center; gap: var(--s5); font-size: 14px; font-weight: var(--w-medium); }
 .site-nav a { text-decoration: none; padding-block: var(--s2); }
 .site-nav a:not(.btn):hover { text-decoration: underline; }
@@ -44,6 +44,29 @@ a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 4px; 
   .wm { height: 16px; }
   .site-nav .wide { display: inline; }
 }
+
+/* ---------- language switch: <nav class="lang-switch"> after .site-nav, EN / FI, current one aria-current ---------- */
+.site-header-in > .site-nav { margin-left: auto; }
+.lang-switch { display: flex; align-items: center; flex: none; font: var(--w-medium) var(--fs-utility)/1 var(--font-utility); }
+.lang-switch a { position: relative; display: inline-flex; align-items: center; justify-content: center; min-width: 24px; min-height: 32px;
+  padding: 0 3px; color: var(--text-muted); text-decoration: none; }
+.lang-switch a:first-child { min-width: 0; padding-left: 0; }
+.lang-switch a + a::before { content: ""; position: absolute; left: 0; top: 50%; width: 1px; height: 14px; margin-top: -7px; background: var(--line); }
+.lang-switch a:hover { color: var(--text); }
+.lang-switch a[aria-current] { color: var(--text); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+/* phones: the header holds wordmark, product name, Contact and EN / FI in 312 px, also in Finnish */
+@media (max-width: 719px) {
+  .site-header-in { gap: var(--s2); }
+  .crumb { gap: var(--s2); }
+  .site-nav { gap: var(--s4); }
+  .btn-small { padding: 0 10px; }
+}
+
+/* Finnish: long compound words. Running text may hyphenate (needs lang="fi"), but only long words; headings stay whole and
+   break only if a word is wider than the screen. */
+:lang(fi) :is(h1, h2, h3) { overflow-wrap: break-word; }
+:lang(fi) :is(p, dd, li):not(.util) { hyphens: auto; -webkit-hyphens: auto; hyphenate-limit-chars: 12 5 5; overflow-wrap: break-word; }
+:lang(fi) :is(p, dd, li) a { hyphens: manual; -webkit-hyphens: manual; }
 
 /* ---------- footer: <footer class="site-footer"><div class="wrap"><div class="site-footer-in">, so the rule spans the content only ---------- */
 .site-footer { margin-top: var(--section-gap); }
@@ -61,7 +84,7 @@ a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 4px; 
   border-radius: var(--radius-pill); background: var(--ink); color: var(--on-ink); font: var(--w-medium) var(--fs-small)/1 var(--font-sans);
   text-decoration: none; cursor: pointer; transition: opacity var(--dur) var(--ease); }
 .btn:hover { opacity: .86; }
-.btn-small { min-height: 32px; padding: 0 var(--s4); font-size: var(--fs-utility); }
+.btn-small { min-height: 32px; padding: 0 var(--s4); font-size: var(--fs-utility); white-space: nowrap; }
 .link { font-weight: var(--w-medium); text-decoration-line: underline; }
 .link:hover { text-decoration-thickness: 2px; }
 .actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3) var(--s5); }
@@ -138,6 +161,7 @@ a.stage:hover > img { transform: scale(1.015); }
 .steps > li { counter-increment: step; display: grid; gap: var(--s2); align-content: start; padding-top: var(--s4); border-top: 1px solid var(--line); }
 .steps > li::before { content: "Step " counter(step); font: var(--w-medium) var(--fs-utility)/1.4 var(--font-utility); color: var(--text-muted); }
 .steps p { color: var(--text-muted); }
+:lang(fi) .steps > li::before { content: "Vaihe " counter(step); }
 @media (min-width: 900px) { .steps { grid-template-columns: repeat(3, 1fr); gap: var(--gutter); } }
 
 /* ---------- features ---------- */
