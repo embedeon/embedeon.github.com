@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Embedeon</title>
-<meta name="description" content="Embedeon does research and development for embedded systems: firmware, electronics, enclosures and software, for clients and for its own products.">
+<meta name="description" content="Embedeon does research and development for embedded systems: firmware, electronics and circuit boards, and its own products.">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#f8f9f9" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0e1012" media="(prefers-color-scheme: dark)">
@@ -17,13 +17,14 @@
 <style>
 .intro { padding-block: var(--s8) var(--s7); }
 .intro h1 { max-width: 14ch; }
+.stack { margin-top: var(--s6); }
 .p-kaamos { --product:#e0691f; --product-text:#a3480b; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .p-kaamos { --product:#f07a32; --product-text:#f39a5e; } }
 :root[data-theme="dark"] .p-kaamos { --product:#f07a32; --product-text:#f39a5e; }
 @media (min-width: 900px) { .intro { padding-block: var(--s10) var(--s8); } }
 </style>
 <meta property="og:title" content="Embedeon">
-<meta property="og:description" content="Research and development for embedded systems: firmware, electronics, enclosures and the software around them.">
+<meta property="og:description" content="Research and development for embedded systems: firmware, electronics and circuit boards.">
 <meta property="og:image" content="https://products.embedeon.com/kaamos/img/og.jpg">
 </head>
 <body>
@@ -32,30 +33,18 @@
 <main id="main">
 <section class="wrap intro split" aria-labelledby="intro-h">
   <h1 id="intro-h">Embedded systems, designed as a whole.</h1>
-  <div><p class="lede muted">Embedeon does research and development for embedded systems: firmware, electronics, housings and the software around them, worked out together from the first prototype to a device that runs.</p></div>
+  <div><p class="lede muted">Embedeon does research and development for embedded systems: the firmware, the electronics and the circuit board, worked out together from first prototype to a device that runs.</p></div>
 </section>
 
 <section class="wrap section" id="services" aria-labelledby="services-h">
-  <div class="section-head"><h2 id="services-h">What we do</h2><p>Engineering for your project, or for our own products, from the first idea to a tested device.</p></div>
+  <div class="section-head"><h2 id="services-h">What we do</h2><p>Engineering work for your project, or for our own products.</p></div>
   <div class="features">
-    <div class="feature"><h3>Embedded firmware</h3><p>Bare-metal and RTOS firmware, drivers, display interfaces and desktop simulators for testing firmware without hardware.</p></div>
-    <div class="feature"><h3>Electronics and PCB design</h3><p>Schematics, circuit simulation, board layout and ready-to-order assembly files.</p></div>
-    <div class="feature"><h3>Enclosures and mechanical parts</h3><p>Housings designed in CAD around the board, 3D-printed prototypes and product renders.</p></div>
-    <div class="feature"><h3>Bring-up, test and review</h3><p>First power-on, automated tests, and an independent design review before anything is ordered.</p></div>
-    <div class="feature"><h3>Apps and web software</h3><p>Companion apps, web tools and back ends that work with the device.</p></div>
-    <div class="feature"><h3>AI-assisted engineering</h3><p>AI agents do much of the design work, and automated checks and a separate reviewer check every result. That makes us fast without skipping steps, and we can set up the same workflow for your team.</p></div>
+    <div class="feature"><h3>Embedded firmware</h3><p>Bare-metal and RTOS firmware, board support packages and low-power design.</p></div>
+    <div class="feature"><h3>Electronics and PCB design</h3><p>Schematics, component choice and circuit board layout.</p></div>
+    <div class="feature"><h3>Hardware bring-up and prototyping</h3><p>First power-on, debugging and prototypes that work on the bench.</p></div>
+    <div class="feature"><h3>System architecture</h3><p>How hardware and firmware divide the work, settled before the details.</p></div>
   </div>
-</section>
-
-<section class="wrap section" id="stack" aria-labelledby="stack-h">
-  <div class="section-head"><h2 id="stack-h">Tools we work with</h2><p>What our current and recent projects use.</p></div>
-  <dl class="spec-list">
-    <div><dt>Firmware</dt><dd>C, C++, MicroPython · STM32 (F4, F7, H7), ESP32 · FreeRTOS, bare-metal · LVGL · I²C, SPI, UART, USB</dd></div>
-    <div><dt>Electronics</dt><dd>KiCad · ngspice simulation · JLCPCB fabrication and assembly</dd></div>
-    <div><dt>Mechanical</dt><dd>FreeCAD · FDM 3D printing · Blender</dd></div>
-    <div><dt>Software</dt><dd>Python, JavaScript · Flask, MongoDB · progressive web apps · pytest, Playwright · GitHub Actions · Cloudflare</dd></div>
-    <div><dt>AI tooling</dt><dd>Claude Code with specialised design and review agents, and automated design checkers</dd></div>
-  </dl>
+  <p class="util stack">C · C++ · Python · ARM · FreeRTOS · KiCad</p>
 </section>
 
 <section class="wrap section" id="products" aria-labelledby="products-h">
