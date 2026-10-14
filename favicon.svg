@@ -1,16 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect x="9" y="9" width="14" height="14" rx="2" fill="#3b82f6"/>
-  <rect x="12" y="12" width="8" height="8" rx="1" fill="#0d0f12"/>
-  <line x1="6" y1="13" x2="9" y2="13" stroke="#3b82f6" stroke-width="1.5"/>
-  <line x1="6" y1="16" x2="9" y2="16" stroke="#3b82f6" stroke-width="1.5"/>
-  <line x1="6" y1="19" x2="9" y2="19" stroke="#3b82f6" stroke-width="1.5"/>
-  <line x1="23" y1="13" x2="26" y2="13" stroke="#3b82f6" stroke-width="1.5"/>
-  <line x1="23" y1="16" x2="26" y2="16" stroke="#3b82f6" stroke-width="1.5"/>
-  <line x1="23" y1="19" x2="26" y2="19" stroke="#3b82f6" stroke-width="1.5"/>
-  <line x1="13" y1="6" x2="13" y2="9" stroke="#3b82f6" stroke-width="1.5"/>
-  <line x1="16" y1="6" x2="16" y2="9" stroke="#3b82f6" stroke-width="1.5"/>
-  <line x1="19" y1="6" x2="19" y2="9" stroke="#3b82f6" stroke-width="1.5"/>
-  <line x1="13" y1="23" x2="13" y2="26" stroke="#3b82f6" stroke-width="1.5"/>
-  <line x1="16" y1="23" x2="16" y2="26" stroke="#3b82f6" stroke-width="1.5"/>
-  <line x1="19" y1="23" x2="19" y2="26" stroke="#3b82f6" stroke-width="1.5"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><title>Embedeon</title><style>.t{fill:#111315}.g{fill:#f8f9f9}@media (prefers-color-scheme:dark){.t{fill:#f1f3f4}.g{fill:#0e1012}}</style><rect class="t" width="32" height="32" rx="7"/><path class="g" d="M8 14H24V18H8ZM23.071 23.071A10 10 0 1 1 26 16L22 16A6 6 0 1 0 20.243 20.243ZM24 16H26V18H24Z"/></svg>

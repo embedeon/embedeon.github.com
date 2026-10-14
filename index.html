@@ -1,337 +1,72 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Embedeon</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='9' y='9' width='14' height='14' rx='2' fill='%233b82f6'/><rect x='12' y='12' width='8' height='8' rx='1' fill='%230d0f12'/><line x1='6' y1='13' x2='9' y2='13' stroke='%233b82f6' stroke-width='1.5'/><line x1='6' y1='16' x2='9' y2='16' stroke='%233b82f6' stroke-width='1.5'/><line x1='6' y1='19' x2='9' y2='19' stroke='%233b82f6' stroke-width='1.5'/><line x1='23' y1='13' x2='26' y2='13' stroke='%233b82f6' stroke-width='1.5'/><line x1='23' y1='16' x2='26' y2='16' stroke='%233b82f6' stroke-width='1.5'/><line x1='23' y1='19' x2='26' y2='19' stroke='%233b82f6' stroke-width='1.5'/><line x1='13' y1='6' x2='13' y2='9' stroke='%233b82f6' stroke-width='1.5'/><line x1='16' y1='6' x2='16' y2='9' stroke='%233b82f6' stroke-width='1.5'/><line x1='19' y1='6' x2='19' y2='9' stroke='%233b82f6' stroke-width='1.5'/><line x1='13' y1='23' x2='13' y2='26' stroke='%233b82f6' stroke-width='1.5'/><line x1='16' y1='23' x2='16' y2='26' stroke='%233b82f6' stroke-width='1.5'/><line x1='19' y1='23' x2='19' y2='26' stroke='%233b82f6' stroke-width='1.5'/></svg>" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #0d0f12;
-      --surface: #13161b;
-      --border: #1e2229;
-      --text: #e2e4e9;
-      --muted: #6b7280;
-      --accent: #3b82f6;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
-      font-size: 15px;
-      line-height: 1.7;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    header {
-      padding: 2.5rem 3rem;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: baseline;
-      gap: 1rem;
-    }
-
-    .logo {
-      font-size: 1.3rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      color: var(--text);
-    }
-
-    .logo span {
-      color: var(--accent);
-    }
-
-    .tagline {
-      color: var(--muted);
-      font-size: 0.8rem;
-    }
-
-    main {
-      flex: 1;
-      max-width: 780px;
-      margin: 0 auto;
-      padding: 5rem 3rem;
-      width: 100%;
-    }
-
-    .prompt {
-      color: var(--accent);
-      user-select: none;
-    }
-
-    h1 {
-      font-size: 1rem;
-      font-weight: 400;
-      color: var(--muted);
-      margin-bottom: 3rem;
-    }
-
-    h1 em {
-      color: var(--text);
-      font-style: normal;
-    }
-
-    .block {
-      margin-bottom: 3rem;
-    }
-
-    .block-label {
-      color: var(--accent);
-      font-size: 0.75rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 0.75rem;
-    }
-
-    .block-label::before { content: '// '; color: var(--muted); }
-
-    .services {
-      list-style: none;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.5rem 2rem;
-    }
-
-    .services li::before {
-      content: '— ';
-      color: var(--muted);
-    }
-
-    .contact a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    .contact a:hover {
-      text-decoration: underline;
-    }
-
-    footer {
-      padding: 1.5rem 3rem;
-      border-top: 1px solid var(--border);
-      color: var(--muted);
-      font-size: 0.78rem;
-    }
-
-    .scope-wrap {
-      position: relative;
-      margin-bottom: 3rem;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-      background: #0a0c0f;
-    }
-
-    .scope-wrap canvas {
-      display: block;
-      width: 100%;
-      height: 180px;
-    }
-
-    /* CRT scanline overlay */
-    .scope-wrap::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        to bottom,
-        transparent 0px,
-        transparent 3px,
-        rgba(0,0,0,0.18) 3px,
-        rgba(0,0,0,0.18) 4px
-      );
-      pointer-events: none;
-    }
-
-    .scope-labels {
-      position: absolute;
-      top: 6px;
-      left: 10px;
-      right: 10px;
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.65rem;
-      color: rgba(0,255,136,0.5);
-      pointer-events: none;
-      letter-spacing: 0.06em;
-    }
-
-    @media (max-width: 600px) {
-      header, main, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
-      .services { grid-template-columns: 1fr; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Embedeon</title>
+<meta name="description" content="Embedeon does research and development for embedded systems: firmware, electronics and circuit boards, and its own products.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f8f9f9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e1012" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@300..700&family=Geist:wght@400..600&display=swap">
+<link rel="stylesheet" href="assets/tokens.css">
+<link rel="stylesheet" href="assets/components.css">
+<style>
+.intro { padding-block: var(--s8) var(--s7); }
+.intro h1 { max-width: 14ch; }
+.stack { margin-top: var(--s6); }
+.p-kaamos { --product:#e0691f; --product-text:#a3480b; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .p-kaamos { --product:#f07a32; --product-text:#f39a5e; } }
+:root[data-theme="dark"] .p-kaamos { --product:#f07a32; --product-text:#f39a5e; }
+@media (min-width: 900px) { .intro { padding-block: var(--s10) var(--s8); } }
+</style>
+<meta property="og:title" content="Embedeon">
+<meta property="og:description" content="Research and development for embedded systems: firmware, electronics and circuit boards.">
+<meta property="og:image" content="https://products.embedeon.com/kaamos/img/og.jpg">
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap site-header-in"><a class="brand" href="./" aria-label="Embedeon, home"><svg viewBox="-1.4 0 220.3 31.4" class="wm" aria-hidden="true" focusable="false"><path fill="currentColor" d="M0 18.6H20V21.4H0ZM18.061 28.061A11.4 11.4 0 1 1 21.4 20L18.6 20A8.6 8.6 0 1 0 16.081 26.081ZM20 20H21.4V21.4H20ZM26.1 17H28.9V30H26.1ZM40.1 17H42.9V30H40.1ZM54.1 17H56.9V30H54.1ZM26.1 17A8.4 8.4 0 0 1 42.9 17L40.1 17A5.6 5.6 0 0 0 28.9 17ZM40.1 17A8.4 8.4 0 0 1 56.9 17L54.1 17A5.6 5.6 0 0 0 42.9 17ZM61.6 0H64.4V30H61.6ZM61.6 20A11.4 11.4 0 1 1 84.4 20A11.4 11.4 0 1 1 61.6 20ZM64.4 20A8.6 8.6 0 1 0 81.6 20A8.6 8.6 0 1 0 64.4 20ZM90.5 18.6H110.5V21.4H90.5ZM108.561 28.061A11.4 11.4 0 1 1 111.9 20L109.1 20A8.6 8.6 0 1 0 106.581 26.081ZM110.5 20H111.9V21.4H110.5ZM136.6 0H139.4V30H136.6ZM116.6 20A11.4 11.4 0 1 1 139.4 20A11.4 11.4 0 1 1 116.6 20ZM119.4 20A8.6 8.6 0 1 0 136.6 20A8.6 8.6 0 1 0 119.4 20ZM145.5 18.6H165.5V21.4H145.5ZM163.561 28.061A11.4 11.4 0 1 1 166.9 20L164.1 20A8.6 8.6 0 1 0 161.581 26.081ZM165.5 20H166.9V21.4H165.5ZM171.6 20A11.4 11.4 0 1 1 194.4 20A11.4 11.4 0 1 1 171.6 20ZM174.4 20A8.6 8.6 0 1 0 191.6 20A8.6 8.6 0 1 0 174.4 20ZM199.1 18.5H201.9V30H199.1ZM216.1 18.5H218.9V30H216.1ZM199.1 18.5A9.9 9.9 0 0 1 218.9 18.5L216.1 18.5A7.1 7.1 0 0 0 201.9 18.5Z"/></svg></a><nav class="site-nav" aria-label="Site"><a href="#services">Services</a><a href="https://products.embedeon.com/">Products</a><a href="#contact">Contact</a></nav></div></header>
+<main id="main">
+<section class="wrap intro split" aria-labelledby="intro-h">
+  <h1 id="intro-h">Embedded systems, designed as a whole.</h1>
+  <div><p class="lede muted">Embedeon does research and development for embedded systems: the firmware, the electronics and the circuit board, worked out together from first prototype to a device that runs.</p></div>
+</section>
 
-  <header>
-    <div class="logo">Embed<span>eon</span></div>
-    <div class="tagline">embedded software &amp; electronics engineering</div>
-  </header>
+<section class="wrap section" id="services" aria-labelledby="services-h">
+  <div class="section-head"><h2 id="services-h">What we do</h2><p>Engineering work for your project, or for our own products.</p></div>
+  <div class="features">
+    <div class="feature"><h3>Embedded firmware</h3><p>Bare-metal and RTOS firmware, board support packages and low-power design.</p></div>
+    <div class="feature"><h3>Electronics and PCB design</h3><p>Schematics, component choice and circuit board layout.</p></div>
+    <div class="feature"><h3>Hardware bring-up and prototyping</h3><p>First power-on, debugging and prototypes that work on the bench.</p></div>
+    <div class="feature"><h3>System architecture</h3><p>How hardware and firmware divide the work, settled before the details.</p></div>
+  </div>
+  <p class="util stack">C · C++ · Python · ARM · FreeRTOS · KiCad</p>
+</section>
 
-  <main>
-    <h1><span class="prompt">$ </span>We build things that run close to the metal. <em>R&amp;D for embedded systems.</em></h1>
-
-    <div class="scope-wrap">
-      <canvas id="scope"></canvas>
-      <div class="scope-labels">
-        <span>CH1</span>
-        <span id="scope-freq">0.5 Hz</span>
-        <span id="scope-amp">0.00 V</span>
-      </div>
+<section class="wrap section" id="products" aria-labelledby="products-h">
+  <div class="section-head"><h2 id="products-h">Our products</h2><p>Devices we design and test ourselves. <a class="link" href="https://products.embedeon.com/">See the product catalog</a></p></div>
+  <div class="products single">
+  <article class="product-item p-kaamos" aria-labelledby="kaamos-name">
+    <a class="stage stage-wide" href="https://products.embedeon.com/kaamos/" tabindex="-1" aria-hidden="true"><img src="img/kaamos-front.webp" alt="" loading="lazy"></a>
+    <div class="product-item-body">
+      <div><p class="util"><span class="dot"></span>Lighting control</p><h3 class="product-name" id="kaamos-name">kaamos</h3><p class="product-tag">Outdoor LED dimmer that follows the sun</p></div>
+      <div><p class="product-sum">Sits between a 12 V or 24 V supply and an LED strip, works out sunrise and sunset for its exact location every day, and switches the strip between your daytime and night levels. No app, no account, no internet connection.</p>
+        <p class="product-meta"><span class="status"><span class="dot"></span>Prototypes in testing</span><a class="link" href="https://products.embedeon.com/kaamos/">View kaamos</a></p></div>
     </div>
+  </article>
+  </div>
+</section>
 
-    <div class="block">
-      <div class="block-label">What we do</div>
-      <ul class="services">
-        <li>Embedded firmware</li>
-        <li>RTOS &amp; bare-metal</li>
-        <li>Hardware bring-up</li>
-        <li>PCB design &amp; layout</li>
-        <li>Prototyping</li>
-        <li>System architecture</li>
-        <li>BSP development</li>
-        <li>Low-power design</li>
-      </ul>
-    </div>
-
-    <div class="block">
-      <div class="block-label">Stack</div>
-      C · C++ · Python · ARM · FreeRTOS · KiCad
-    </div>
-
-    <div class="block contact">
-      <div class="block-label">Contact</div>
-      <a href="mailto:abel@embedeon.com">abel@embedeon.com</a>
-    </div>
-  </main>
-
-  <footer>
-    &copy; 2026 Embedeon &mdash; R&amp;D in embedded software &amp; electronics engineering
-  </footer>
-
-<script>
-  const canvas = document.getElementById('scope');
-  const ctx = canvas.getContext('2d');
-
-  // Mouse tracking
-  let mouseX = 0, mouseY = 0, prevMouseX = 0, prevMouseY = 0;
-  let hasMouseMoved = false;
-  window.addEventListener('mousemove', e => {
-    prevMouseX = mouseX; prevMouseY = mouseY;
-    mouseX = e.clientX; mouseY = e.clientY;
-    hasMouseMoved = true;
-  });
-
-  // Signal state
-  let targetAmp = 0, targetFreq = 0.5;
-  let amp = 0, freq = 0.5;
-  let phase = 0;
-  const BUFFER = 400;
-  const samples = new Float32Array(BUFFER);
-  let demoPhase = 0;
-
-  function lerp(a, b, t) { return a + (b - a) * t; }
-
-  function resize() {
-    const rect = canvas.parentElement.getBoundingClientRect();
-    canvas.width = rect.width * devicePixelRatio;
-    canvas.height = 180 * devicePixelRatio;
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  function drawGrid(w, h) {
-    ctx.strokeStyle = 'rgba(0,255,136,0.08)';
-    ctx.lineWidth = 1;
-    const cols = 10, rows = 8;
-    for (let i = 0; i <= cols; i++) {
-      ctx.beginPath();
-      ctx.moveTo(i * w / cols, 0);
-      ctx.lineTo(i * w / cols, h);
-      ctx.stroke();
-    }
-    for (let i = 0; i <= rows; i++) {
-      ctx.beginPath();
-      ctx.moveTo(0, i * h / rows);
-      ctx.lineTo(w, i * h / rows);
-      ctx.stroke();
-    }
-    // Center lines slightly brighter
-    ctx.strokeStyle = 'rgba(0,255,136,0.15)';
-    ctx.beginPath(); ctx.moveTo(0, h / 2); ctx.lineTo(w, h / 2); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(w / 2, 0); ctx.lineTo(w / 2, h); ctx.stroke();
-  }
-
-  function frame() {
-    const w = canvas.width, h = canvas.height;
-    ctx.clearRect(0, 0, w, h);
-
-    // Background
-    ctx.fillStyle = '#0a0c0f';
-    ctx.fillRect(0, 0, w, h);
-
-    drawGrid(w, h);
-
-    if (hasMouseMoved) {
-      const dx = mouseX - prevMouseX;
-      const dy = mouseY - prevMouseY;
-      const speed = Math.min(Math.sqrt(dx * dx + dy * dy), 40) / 40;
-      const absDx = Math.abs(dx), absDy = Math.abs(dy);
-      const verticality = absDy / (absDx + absDy + 0.001);
-
-      targetAmp = speed;
-      targetFreq = lerp(0.5, 10, verticality);
-    } else {
-      // Demo: gentle sine when no mouse
-      targetAmp = 0.18;
-      targetFreq = 0.8;
-    }
-
-    // Smooth toward targets
-    amp = lerp(amp, targetAmp, 0.08);
-    freq = lerp(freq, targetFreq, 0.06);
-
-    // Advance phase and push new sample
-    phase += (freq / 60) * Math.PI * 2;
-    const newSample = amp * Math.sin(phase);
-
-    // Shift buffer left, add new sample
-    samples.copyWithin(0, 1);
-    samples[BUFFER - 1] = newSample;
-
-    // Draw waveform
-    ctx.beginPath();
-    ctx.strokeStyle = '#00ff88';
-    ctx.lineWidth = 1.5 * devicePixelRatio;
-    ctx.shadowBlur = 10 * devicePixelRatio;
-    ctx.shadowColor = '#00ff88';
-
-    const cy = h / 2;
-    const yscale = (h / 2) * 0.85;
-
-    for (let i = 0; i < BUFFER; i++) {
-      const x = (i / (BUFFER - 1)) * w;
-      const y = cy - samples[i] * yscale;
-      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-    }
-    ctx.stroke();
-    ctx.shadowBlur = 0;
-
-    // Update labels
-    document.getElementById('scope-freq').textContent = freq.toFixed(1) + ' Hz';
-    document.getElementById('scope-amp').textContent = (amp * 3.3).toFixed(2) + ' V';
-
-    requestAnimationFrame(frame);
-  }
-
-  frame();
-</script>
+<section class="wrap section contact" id="contact" aria-labelledby="contact-h">
+  <h2 id="contact-h">Talk to us</h2>
+  <div class="contact-body"><p>A project that needs embedded engineering, a question about a product, or something you would like us to build: write to us and a person replies.</p>
+  <p class="actions"><a class="btn" href="mailto:abel@embedeon.com">Contact us</a><span class="mail">abel@embedeon.com</span></p></div>
+</section>
+</main>
+<footer class="site-footer"><div class="wrap"><div class="site-footer-in"><span><svg viewBox="-1.4 0 220.3 31.4" class="wm" aria-hidden="true" focusable="false"><path fill="currentColor" d="M0 18.6H20V21.4H0ZM18.061 28.061A11.4 11.4 0 1 1 21.4 20L18.6 20A8.6 8.6 0 1 0 16.081 26.081ZM20 20H21.4V21.4H20ZM26.1 17H28.9V30H26.1ZM40.1 17H42.9V30H40.1ZM54.1 17H56.9V30H54.1ZM26.1 17A8.4 8.4 0 0 1 42.9 17L40.1 17A5.6 5.6 0 0 0 28.9 17ZM40.1 17A8.4 8.4 0 0 1 56.9 17L54.1 17A5.6 5.6 0 0 0 42.9 17ZM61.6 0H64.4V30H61.6ZM61.6 20A11.4 11.4 0 1 1 84.4 20A11.4 11.4 0 1 1 61.6 20ZM64.4 20A8.6 8.6 0 1 0 81.6 20A8.6 8.6 0 1 0 64.4 20ZM90.5 18.6H110.5V21.4H90.5ZM108.561 28.061A11.4 11.4 0 1 1 111.9 20L109.1 20A8.6 8.6 0 1 0 106.581 26.081ZM110.5 20H111.9V21.4H110.5ZM136.6 0H139.4V30H136.6ZM116.6 20A11.4 11.4 0 1 1 139.4 20A11.4 11.4 0 1 1 116.6 20ZM119.4 20A8.6 8.6 0 1 0 136.6 20A8.6 8.6 0 1 0 119.4 20ZM145.5 18.6H165.5V21.4H145.5ZM163.561 28.061A11.4 11.4 0 1 1 166.9 20L164.1 20A8.6 8.6 0 1 0 161.581 26.081ZM165.5 20H166.9V21.4H165.5ZM171.6 20A11.4 11.4 0 1 1 194.4 20A11.4 11.4 0 1 1 171.6 20ZM174.4 20A8.6 8.6 0 1 0 191.6 20A8.6 8.6 0 1 0 174.4 20ZM199.1 18.5H201.9V30H199.1ZM216.1 18.5H218.9V30H216.1ZM199.1 18.5A9.9 9.9 0 0 1 218.9 18.5L216.1 18.5A7.1 7.1 0 0 0 201.9 18.5Z"/></svg><span class="visually-hidden">Embedeon</span></span><span>&copy; 2026 Embedeon</span><a href="mailto:abel@embedeon.com">abel@embedeon.com</a></div></div></footer>
 </body>
 </html>

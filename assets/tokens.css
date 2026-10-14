@@ -1,0 +1,103 @@
+/* Embedeon brand tokens: direction "Valo" (chosen 2026-10-13).
+   Light is the default. Dark follows the system unless the page sets data-theme="light"; data-theme="dark" forces it.
+   Load order on every page: Google Fonts (Albert Sans + Geist), tokens.css, components.css, then page CSS.
+   Fonts: https://fonts.googleapis.com/css2?family=Albert+Sans:wght@300..700&family=Geist:wght@400..600&display=swap
+
+   Contrast (WCAG 2.x, light / dark), all text pairs pass AA 4.5:1:
+     ink on snow 17.7 / 17.1      ink on stage 16.0 / 15.5     stone on snow 6.1 / 7.9    stone on stage 5.5 / 7.2
+     snow on ink (button) 17.7 / 17.1                          product-text on snow 5.7 / 8.7 (kaamos values)
+   hairline is for dividers only, never for text. product (the raw accent) is for dots and marks, never for body text. */
+
+:root {
+  color-scheme: light;
+
+  /* palette */
+  --snow: #f8f9f9;        /* page ground */
+  --stage: #eceeef;       /* image stage, quiet panels */
+  --ink: #111315;         /* text, primary buttons */
+  --stone: #596066;       /* secondary text, captions, labels */
+  --hairline: #dde0e2;    /* dividers only */
+
+  /* product accent: neutral by default; a product page or card overrides both (see GUIDELINES.md) */
+  --product: #596066;       /* dot, small marks; non-text */
+  --product-text: #596066;  /* the accent when it has to be text: 4.5:1 on snow and stage */
+
+  /* roles (use these in components, not the palette names) */
+  --bg: var(--snow);
+  --surface: var(--stage);
+  --text: var(--ink);
+  --text-muted: var(--stone);
+  --line: var(--hairline);
+  --on-ink: var(--snow);    /* text on an ink button */
+  --focus: var(--ink);
+
+  /* type */
+  --font-sans: "Albert Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-utility: Geist, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --fs-display: clamp(36px, 2.2rem + 2.6vw, 64px);   /* h1 */
+  --fs-h2: clamp(30px, 1.6rem + 1.4vw, 44px);
+  --fs-h3: 22px;
+  --fs-name: 26px;          /* product name in lists */
+  --fs-figure: clamp(26px, 1.2rem + 1.2vw, 38px);    /* key numbers */
+  --fs-lede: clamp(17px, 1rem + .3vw, 19px);
+  --fs-body: 16px;
+  --fs-small: 15px;
+  --fs-utility: 13px;
+  --lh-tight: 1.06;
+  --lh-head: 1.15;
+  --lh-body: 1.55;
+  --track-display: -.03em;
+  --track-head: -.02em;
+  --w-light: 300;
+  --w-regular: 400;
+  --w-medium: 500;
+
+  /* space: 4 px base */
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px; --s8: 64px; --s9: 96px; --s10: 128px;
+
+  /* layout */
+  --wrap: 1180px;            /* content width */
+  --margin: 24px;            /* page margin; 48 px from 720 px up */
+  --gutter: 24px;
+  --measure: 62ch;           /* longest line of running text */
+  --section-gap: var(--s9);  /* space between sections; sections are separated by space, not lines */
+  --header-h: 60px;
+
+  /* shape and motion */
+  --radius-pill: 999px;
+  --radius-small: 4px;       /* inputs, code; stages and panels stay square */
+  --dur: .18s;
+  --ease: cubic-bezier(.2, 0, 0, 1);
+}
+
+@media (min-width: 720px) {
+  :root { --margin: 48px; --section-gap: var(--s10); --header-h: 72px; }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --snow: #0e1012;
+    --stage: #181b1e;
+    --ink: #f1f3f4;
+    --stone: #a1a8ae;
+    --hairline: #2b2f33;
+    --product: #a1a8ae;
+    --product-text: #a1a8ae;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --snow: #0e1012;
+  --stage: #181b1e;
+  --ink: #f1f3f4;
+  --stone: #a1a8ae;
+  --hairline: #2b2f33;
+  --product: #a1a8ae;
+  --product-text: #a1a8ae;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur: 0s; }
+}
