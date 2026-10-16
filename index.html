@@ -37,7 +37,20 @@
 .p-kaamos { --product:#e0691f; --product-text:#a3480b; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .p-kaamos { --product:#f07a32; --product-text:#f39a5e; } }
 :root[data-theme="dark"] .p-kaamos { --product:#f07a32; --product-text:#f39a5e; }
-@media (min-width: 900px) { .intro { padding-block: var(--s10) var(--s8); } }
+@media (min-width: 900px) { .intro { padding-block: var(--s9) var(--s7); } }
+.build { margin-top: calc(-1 * var(--s4)); }
+.build .stage > img { transition: opacity 1.2s var(--ease); }
+.build .stage .build-board { opacity: 0; }
+.build.is-board .build-board { opacity: 1; }
+.build.is-board .build-device { opacity: 0; }
+.build-ring { position: absolute; width: 9%; aspect-ratio: 1; border: 2px solid var(--product); border-radius: 50%; transform: translate(-50%, -50%) scale(.6); opacity: 0; pointer-events: none; }
+.build-ring.go { animation: build-ping 1.4s var(--ease) 2; }
+@keyframes build-ping { 0% { opacity: .9; transform: translate(-50%, -50%) scale(.6); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.5); } }
+.build-steps { list-style: none; margin: var(--s4) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s2); }
+.build-steps li { display: inline-flex; align-items: center; gap: var(--s2); font: var(--w-medium) var(--fs-utility)/1 var(--font-utility); color: var(--text); padding: 8px 12px; border: 1px solid var(--text-muted); border-radius: 999px; transition: color .4s, border-color .4s; }
+.build-steps li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--product); transition: background .4s; }
+.build.is-board .build-steps li:not(.on) { color: var(--text-muted); border-color: var(--line); }
+.build.is-board .build-steps li:not(.on)::before { background: var(--line); }
 </style>
 <meta property="og:title" content="Embedeon">
 <meta property="og:description" content="Research and development for embedded systems: firmware, electronics and circuit boards.">
@@ -55,6 +68,37 @@
   <div><p class="lede muted">Professional R&amp;D for embedded software and electronics.</p></div>
 </section>
 
+<section class="wrap build p-kaamos" id="build" aria-label="From circuit board to finished device">
+  <div class="stage stage-wide">
+    <img class="build-board" src="img/kaamos-board.webp" alt="The kaamos circuit board seen from above" width="1160" height="1000" fetchpriority="high">
+    <img class="build-device" src="img/kaamos-front.webp" alt="The finished kaamos in its light grey housing, seen from the front" width="1160" height="1000">
+    <span class="build-ring" aria-hidden="true"></span>
+  </div>
+  <ol class="build-steps"><li>Circuit board</li><li>Firmware</li><li>Enclosure</li></ol>
+</section>
+<script>
+// First screen: the kaamos board fades into the finished device while the steps light up. Plays once.
+// Without JavaScript, or with reduced motion, the page simply shows the device and all three steps.
+(function () {
+  var root = document.getElementById("build");
+  if (!root || (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) return;
+  var board = root.querySelector(".build-board"), ring = root.querySelector(".build-ring"), steps = root.querySelectorAll(".build-steps li");
+  root.classList.add("is-board");
+  function placeRing() {  // over the ESP32 module, at 66.2 % / 21.8 % of the 1160 x 1000 render
+    var w = board.clientWidth, h = board.clientHeight, r = 1160 / 1000;
+    var cw = Math.min(w, h * r), ch = cw / r;
+    ring.style.left = (board.offsetLeft + (w - cw) / 2 + cw * .662) + "px";
+    ring.style.top = (board.offsetTop + (h - ch) / 2 + ch * .218) + "px";
+  }
+  function play() {
+    setTimeout(function () { steps[0].classList.add("on"); }, 400);
+    setTimeout(function () { steps[1].classList.add("on"); placeRing(); ring.classList.add("go"); }, 1800);
+    setTimeout(function () { steps[2].classList.add("on"); root.classList.remove("is-board"); }, 4400);
+  }
+  if (board.complete) play(); else { board.addEventListener("load", play); board.addEventListener("error", function () { root.classList.remove("is-board"); }); }
+})();
+</script>
+
 <section class="wrap section" id="services" aria-labelledby="services-h">
   <div class="section-head"><h2 id="services-h">What we do</h2><p>Engineering work for your project, or for our own products.</p></div>
   <div class="features">
@@ -70,7 +114,7 @@
   <div class="section-head"><h2 id="products-h">Our products</h2><p>Devices we design and test ourselves. <a class="link" href="https://products.embedeon.com/">See the product catalog</a></p></div>
   <div class="products single">
   <article class="product-item p-kaamos" aria-labelledby="kaamos-name">
-    <a class="stage stage-wide" href="https://products.embedeon.com/kaamos/" tabindex="-1" aria-hidden="true"><img src="img/kaamos-front.webp" alt="" loading="lazy"></a>
+    <a class="stage stage-wide" href="https://products.embedeon.com/kaamos/" tabindex="-1" aria-hidden="true"><img src="img/kaamos-three.webp" alt="" loading="lazy"></a>
     <div class="product-item-body">
       <div><p class="util"><span class="dot"></span>Lighting control</p><h3 class="product-name" id="kaamos-name">kaamos</h3><p class="product-tag">Outdoor LED dimmer that follows the sun</p></div>
       <div><p class="product-sum">Sits between a 12 V or 24 V supply and an LED strip, works out sunrise and sunset for its exact location every day, and switches the strip between your daytime and night levels. Everything runs on the device itself, so it keeps working without an internet connection.</p>
